@@ -5,9 +5,8 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { BlogContent } from "@/components/BlogContent" // Import BlogContent component
 
-export default async function BlogPostPage({
-  params,
-}) {
+export default async function BlogPostPage({params}) {
+  const {id} = await params;
   const supabase = await createClient()
   const {
     data: { user },
@@ -17,7 +16,7 @@ export default async function BlogPostPage({
     redirect("/auth/login")
   }
 
-  const { data: post } = await supabase.from("posts").select("*").eq("id", params.id).eq("user_id", user.id).single()
+  const { data: post } = await supabase.from("posts").select("*").eq("id", id).eq("user_id", user.id).single()
 
   if (!post) {
     notFound()
